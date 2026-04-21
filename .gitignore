@@ -1,3 +1,6 @@
 # Ambientes
 .venv
 venv
+env
+ENV
+Images
