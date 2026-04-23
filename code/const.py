@@ -7,6 +7,7 @@ WIN_HEIGHT = 512
 # Colors
 WHITE = (255, 255, 255)
 GRAY = (200, 200, 200)
+PURPLE = (163, 73, 164)
 
 
 # Menu Options
