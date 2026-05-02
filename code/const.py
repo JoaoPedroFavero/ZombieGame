@@ -17,12 +17,14 @@ MENU_OPTIONS = ("Start Game", "Options", "Scoreboard", "Exit")
 ENTITY_SPEED = {
     "Level_1bg1": 0,
     "Level_1bg2": 1,
-    "Level_1bg3": 2,
-    "Level_1bg4": 3,
-    "Level_1bg5": 4,
-    "Level_1bg6": 5,
-    "Level_1bg7": 6,
+    "Level_1bg3": 1,
+    "Level_1bg4": 2,
+    "Level_1bg5": 2.5,
+    "Level_1bg6": 3,
+    "Level_1bg7": 3,
 }
+
+TAMANHO_PLAYER = (200, 200)
 
 # Memmorize comands
 #blit - desenha a imagem na tela, recebe a imagem e a posição (x, y) onde a imagem deve ser desenhada

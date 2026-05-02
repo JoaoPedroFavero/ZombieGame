@@ -1,7 +1,8 @@
 import pygame
 
 from code.Background import Background
-from code.const import WIN_WIDTH
+from code.Player import Player
+from code.const import WIN_HEIGHT, WIN_WIDTH
 
 class EntityFactory:
 
@@ -19,4 +20,9 @@ class EntityFactory:
                     )
                 
                 return list_bg
-    
+
+            case "PlayerIdle":
+                return Player(name="PlayerIdle", position=(100, WIN_HEIGHT - 250))
+            
+            case "PlayerWalk":
+                return Player(name="PlayerWalk", position=(100, WIN_HEIGHT - 250))

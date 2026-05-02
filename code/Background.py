@@ -9,7 +9,19 @@ class Background(Entity):
         super().__init__(name=name, position=position)
 
     def move(self):
-        self.rect.centerx -= ENTITY_SPEED[self.name]
-        if self.rect.right < 0:
-            self.rect.left = WIN_WIDTH
-                    
+        pressed_key = pygame.key.get_pressed()
+
+        background_speed = ENTITY_SPEED[self.name]
+
+        if pressed_key[pygame.K_LSHIFT]:
+            background_speed = background_speed * 2.5
+
+        if pressed_key[pygame.K_d]:
+            self.rect.centerx -= background_speed
+            if self.rect.right < 5:
+                self.rect.left = WIN_WIDTH
+
+        if pressed_key[pygame.K_a]:
+            self.rect.centerx += background_speed
+            if self.rect.left > WIN_WIDTH:
+                self.rect.right = 5
