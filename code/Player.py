@@ -43,31 +43,49 @@ class Player(Entity):
             run_back = pygame.transform.scale(run_back, TAMANHO_PLAYER)
             self.frames_run_back.append(run_back)
 
-
+        self.last_step = 0
+        self.step_delay = 500 #milisegundos
+        self.player_step = pygame.mixer.Sound("./Assets/PlayerFootStep.wav")
+        pygame.mixer.Sound.set_volume(self.player_step, 0.2)
 
     def move(self):
-        image_now = pygame.time.get_ticks()
+        now = pygame.time.get_ticks()
+        pressed_key = pygame.key.get_pressed()
 
-        if image_now - self.last_update > self.animation_delay:
-            self.last_update = image_now
+        def step_sound():
+            if pressed_key[pygame.K_LSHIFT]:
+                self.step_delay = 300 #milisegundos
+            else:
+                self.step_delay = 500 #milisegundos
+
+            if now - self.last_step > self.step_delay:
+                self.last_step = now
+                self.player_step.play()
+
+
+        if now - self.last_update > self.animation_delay:
+            self.last_update = now
             self.frame_index += 1
 
         if(self.frame_index >= len(self.frames_idle)):
             self.frame_index = 0
 
         self.surf = self.frames_idle[self.frame_index] # Idle animation
-        
 
-        pressed_key = pygame.key.get_pressed()
+
         if pressed_key[pygame.K_d]:
             self.surf = self.frames_walk[self.frame_index] # Walk animation to the right
+            step_sound()
 
         if pressed_key[pygame.K_a]:
             self.surf = self.frames_walk_back[self.frame_index] # Walk animation to the left
+            step_sound()
+            
 
         if pressed_key[pygame.K_LSHIFT] and pressed_key[pygame.K_d]:
-             self.surf = self.frames_run[self.frame_index] # Run animation to the right
+            self.surf = self.frames_run[self.frame_index] # Run animation to the right
+            step_sound()
 
         if pressed_key[pygame.K_LSHIFT] and pressed_key[pygame.K_a]:
             self.surf = self.frames_run_back[self.frame_index] # Run animation to the left
-            
+            step_sound()

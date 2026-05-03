@@ -1,13 +1,16 @@
 import pygame
 
 from code.Background import Background
+from code.Enemy import Enemy
 from code.Player import Player
-from code.const import WIN_HEIGHT, WIN_WIDTH
+from code.const import WIN_HEIGHT, WIN_WIDTH, PLAYER_POSITION
 
 class EntityFactory:
 
     @staticmethod
     def get_entity(entity_name: str, position=(0, 0)):
+        player_position = PLAYER_POSITION
+
         match entity_name:
             case "Level_1bg":
                 list_bg = []
@@ -16,13 +19,19 @@ class EntityFactory:
                         Background(name=f"Level_1bg{i+1}", position=(0, 0))
                     ) 
                     list_bg.append(
-                        Background(name=f"Level_1bg{i+1}", position=(WIN_WIDTH, 0))
+                        Background(name=f"Level_1bg{i+1}", position=(WIN_WIDTH - 5, 0))
                     )
                 
                 return list_bg
 
             case "PlayerIdle":
-                return Player(name="PlayerIdle", position=(100, WIN_HEIGHT - 250))
+                return Player(name="PlayerIdle", position=player_position)
             
             case "PlayerWalk":
-                return Player(name="PlayerWalk", position=(100, WIN_HEIGHT - 250))
+                return Player(name="PlayerWalk", position=player_position)
+            
+            case "ZombieIdle":
+                return Enemy(name="ZombieIdle", position=position)
+            
+            case "ZombieWalk":
+                return Enemy(name="ZombieWalk", position=position)

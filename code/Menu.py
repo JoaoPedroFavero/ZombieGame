@@ -15,7 +15,7 @@ class Menu:
         menu_selected = 0
         pygame.mixer.music.load("./Assets/menuMusic.wav")
         pygame.mixer.music.play(-1)
-        pygame.mixer.music.set_volume(0.3)
+        pygame.mixer.music.set_volume(0.2)
 
         while True:
             self.window.blit(source=self.surf, dest=self.rect)

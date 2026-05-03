@@ -25,7 +25,7 @@ ENTITY_SPEED = {
 }
 
 TAMANHO_PLAYER = (200, 200)
+PLAYER_POSITION = (100, WIN_HEIGHT - 250)
 
-# Memmorize comands
-#blit - desenha a imagem na tela, recebe a imagem e a posição (x, y) onde a imagem deve ser desenhada
-#flip - atualiza a tela, deve ser chamado depois de desenhar tudo na tela para que as mudanças sejam visíveis
+TAMANHO_ENEMY = (160, 190) # to the position -> position=(WIN_WIDTH - 200, 280)
+ENEMY_LEVEL1_SPEED = 2

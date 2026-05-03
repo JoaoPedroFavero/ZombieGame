@@ -16,12 +16,12 @@ class Level:
         self.entity_list: List[Entity] = []
         self.entity_list.extend(EntityFactory.get_entity(entity_name="Level_1bg"))
         self.entity_list.append(EntityFactory.get_entity(entity_name="PlayerIdle"))
-
+        self.entity_list.append(EntityFactory.get_entity(entity_name="ZombieIdle", position=(WIN_WIDTH - 200, 280)))
 
     def run(self):
         pygame.mixer.music.load("./Assets/level1Music.wav")
+        pygame.mixer.music.set_volume(0.1)
         pygame.mixer.music.play(-1)
-        pygame.mixer.music.set_volume(0.2)
         clock = pygame.time.Clock()
         
         while True:
@@ -45,7 +45,6 @@ class Level:
 
             pygame.display.flip()
 
-        pass
 
     def level_text(self, text: str, font_size: int, color: tuple, position: tuple):
         text_font: font = pygame.font.SysFont("Lucida Sans Typewriter", font_size)
