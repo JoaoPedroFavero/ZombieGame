@@ -24,8 +24,12 @@ ENTITY_SPEED = {
     "Level_1bg7": 3,
 }
 
+SHOOT_SPEED = 15
+
 TAMANHO_PLAYER = (200, 200)
 PLAYER_POSITION = (100, WIN_HEIGHT - 250)
+PLAYER_HEALTH = 100
 
 TAMANHO_ENEMY = (160, 190) # to the position -> position=(WIN_WIDTH - 200, 280)
 ENEMY_LEVEL1_SPEED = 2
+ENEMY_HEALTH = 50 #to the level 1, to the next levels, the health of the enemy will be increased

@@ -2,9 +2,11 @@ from ast import List
 from tkinter import font
 from pygame import surface
 from pygame import rect
+from code.Player import Player
 from code.EntityFactory import EntityFactory
 from code.Entity import Entity
 import pygame
+from code.EntityMediator import EntityMediator
 from code.const import WHITE, WIN_WIDTH
 
 
@@ -25,12 +27,17 @@ class Level:
         clock = pygame.time.Clock()
         
         while True:
-            clock.tick(30)
+            clock.tick(60)
             for entity in self.entity_list:
                 self.window.blit(source=entity.surf, dest=entity.rect) # instancias da Entity (surf e rect) para desenhar a imagem na tela
                 entity.move()
+
+                if isinstance(entity, Player):
+                    shoot = entity.shoot()
+                    if shoot is not None:
+                        self.entity_list.append(shoot)
+                        print(f"tiro apareceu {entity}")
                 
-            
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -42,8 +49,13 @@ class Level:
                     
             self.level_text("Level 1 - Cidade Velha", 30, WHITE, (WIN_WIDTH - 650, 20))
             self.level_text(f"FPS: {int(clock.get_fps())}", 20, WHITE, (WIN_WIDTH - 730, 40))
+            self.level_text(f"Player Health: {self.entity_list[14].health}", 20, WHITE, (WIN_WIDTH - 700, 60)) #emtity_list[14] = player index
 
             pygame.display.flip()
+
+            #Colisões
+            EntityMediator.verify_collision(self.entity_list)
+            EntityMediator.verify_health(self.entity_list)
 
 
     def level_text(self, text: str, font_size: int, color: tuple, position: tuple):

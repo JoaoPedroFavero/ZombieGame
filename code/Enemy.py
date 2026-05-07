@@ -34,12 +34,18 @@ class Enemy(Entity):
         self.zombie_step = pygame.mixer.Sound("./Assets/ZombieFootStep.wav")
         self.zombie_step.set_volume(0.2)
 
+        self.last_time_punch = 0
+        self.punch_delay = 500 #milisegundos
+        self.zombie_punch = pygame.mixer.Sound("./Assets/ZombiePunch.wav")
+        self.zombie_punch.set_volume(0.2)
+
     def move(self):
         now = pygame.time.get_ticks()
         pressed_key = pygame.key.get_pressed()
 
         if now - self.last_time_roar > self.roar_delay:
             self.last_time_roar = now
+            self.zombie_step.set_volume(0.2)
             self.zombie_sound.play()
 
         if now - self.last_zombie_step > self.zombie_step_delay:
@@ -56,24 +62,29 @@ class Enemy(Entity):
         if(self.frame_index >= len(self.frames_attack)):
             self.frame_index = 0
 
-
         self.rect.x -= ENEMY_LEVEL1_SPEED
         self.surf = self.frames_walk[self.frame_index]
 
-        if pressed_key[pygame.K_a]:
+        if pressed_key[pygame.K_a] and not pressed_key[pygame.K_LCTRL]:
             self.rect.x += ENEMY_LEVEL1_SPEED
 
-        if pressed_key[pygame.K_a] and pressed_key[pygame.K_LSHIFT]:
+        if pressed_key[pygame.K_a] and pressed_key[pygame.K_LSHIFT] and not pressed_key[pygame.K_LCTRL]:
             self.rect.x += ENEMY_LEVEL1_SPEED * 2
         
-        if pressed_key[pygame.K_d]:
+        if pressed_key[pygame.K_d] and not pressed_key[pygame.K_LCTRL]:
             self.rect.x -= ENEMY_LEVEL1_SPEED * 1.5
 
-        if pressed_key[pygame.K_d] and pressed_key[pygame.K_LSHIFT]:
+        if pressed_key[pygame.K_d] and pressed_key[pygame.K_LSHIFT] and not pressed_key[pygame.K_LCTRL]:
             self.rect.x -= ENEMY_LEVEL1_SPEED * 3
 
         if self.rect.left < PLAYER_POSITION[0] + 70:
             self.rect.left = PLAYER_POSITION[0] + 70
+            self.zombie_step.set_volume(0)
+            
+            if now - self.last_time_punch > self.punch_delay:
+                self.last_time_punch = now
+                self.zombie_punch.play()
+
             self.surf = self.frames_attack[self.frame_index]
 
         

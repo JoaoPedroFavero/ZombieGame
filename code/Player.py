@@ -1,7 +1,9 @@
 import pygame
 
+from code.Shoot import Shoot
 from code.Entity import Entity
 from code.const import TAMANHO_PLAYER
+from code.EntityMediator import EntityMediator
 
 class Player(Entity):
 
@@ -13,6 +15,8 @@ class Player(Entity):
         self.frames_walk_back = []
         self.frames_run = []
         self.frames_run_back = []
+        self.frames_hurt = []
+        self.frames_shoot = []
 
         self.frame_index = 0
         self.last_update = pygame.time.get_ticks()
@@ -43,10 +47,27 @@ class Player(Entity):
             run_back = pygame.transform.scale(run_back, TAMANHO_PLAYER)
             self.frames_run_back.append(run_back)
 
+        for image in range(2):
+            hurt = pygame.image.load(f"Assets/PlayerHurt{image+1}.png").convert_alpha()
+            hurt = pygame.transform.scale(hurt, TAMANHO_PLAYER)
+            self.frames_hurt.append(hurt)
+
+        for image in range(12):
+            shoot = pygame.image.load(f"Assets/PlayerShoot{image+1}.png").convert_alpha()
+            shoot = pygame.transform.scale(shoot, (TAMANHO_PLAYER[0]*2.2, TAMANHO_PLAYER[1])) #Compensa o tamanho do Sprite de tirom, deixando-o proporcional aos outros Sprites
+            self.frames_shoot.append(shoot)
+
         self.last_step = 0
         self.step_delay = 500 #milisegundos
         self.player_step = pygame.mixer.Sound("./Assets/PlayerFootStep.wav")
         pygame.mixer.Sound.set_volume(self.player_step, 0.2)
+
+        self.last_time_shoot = 0
+        self.shoot_delay = 1100 #milisegundos
+        self.bullet_shoot = pygame.mixer.Sound("./Assets/BulletShoot.wav")
+        self.bullet_shoot.set_volume(0.2)
+
+
 
     def move(self):
         now = pygame.time.get_ticks()
@@ -69,6 +90,9 @@ class Player(Entity):
 
         if(self.frame_index >= len(self.frames_idle)):
             self.frame_index = 0
+        
+        if(self.frame_index >= len(self.frames_shoot)):
+            self.frame_index = 0
 
         self.surf = self.frames_idle[self.frame_index] # Idle animation
 
@@ -80,7 +104,6 @@ class Player(Entity):
         if pressed_key[pygame.K_a]:
             self.surf = self.frames_walk_back[self.frame_index] # Walk animation to the left
             step_sound()
-            
 
         if pressed_key[pygame.K_LSHIFT] and pressed_key[pygame.K_d]:
             self.surf = self.frames_run[self.frame_index] # Run animation to the right
@@ -89,3 +112,17 @@ class Player(Entity):
         if pressed_key[pygame.K_LSHIFT] and pressed_key[pygame.K_a]:
             self.surf = self.frames_run_back[self.frame_index] # Run animation to the left
             step_sound()
+
+        if pressed_key[pygame.K_LCTRL]:
+            if now - self.last_time_shoot > self.shoot_delay:
+                self.last_time_shoot = now
+                self.bullet_shoot.play()
+            self.surf = self.frames_shoot[self.frame_index] # Shoot animation
+
+            
+    def shoot(self):
+        self.shooting = False
+
+        pressed_key = pygame.key.get_pressed()
+        if pressed_key[pygame.K_LCTRL]:
+            return Shoot(name="Shoot", position=(self.rect.right, self.rect.centery))

@@ -13,6 +13,9 @@ class Background(Entity):
 
         background_speed = ENTITY_SPEED[self.name]
 
+        if pressed_key[pygame.K_LCTRL]:
+            background_speed = 0
+            
         if pressed_key[pygame.K_LSHIFT]:
             background_speed = background_speed * 3
 

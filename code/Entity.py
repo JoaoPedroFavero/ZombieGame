@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
 import pygame
 
+from code.const import ENEMY_HEALTH, PLAYER_HEALTH
+
 
 class Entity(ABC):
 
@@ -10,6 +12,11 @@ class Entity(ABC):
         self.rect = self.surf.get_rect(left=position[0], top=position[1])
         self.speed = 0
 
-    @abstractmethod
-    def move(self):
-        pass
+        if name.startswith("Player"):
+            self.health = PLAYER_HEALTH
+
+        elif name.startswith("Zombie"):
+            self.health = ENEMY_HEALTH
+        else:
+            self.health = 1
+

@@ -1,1 +1,0 @@
-![Imagem Menu](Assets/imgMenu.png)
